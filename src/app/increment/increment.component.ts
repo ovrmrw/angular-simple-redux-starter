@@ -13,7 +13,7 @@ import { increment, lastUpdated } from '../../state';
     <h1>{{counter}}</h1>
     <button (click)="increment()">increment</button>
     <button (click)="decrement()">decrement</button>
-    <button (click)="resetAction()">reset</button>
+    <button (click)="reset()">reset</button>
     <div>lastUpdated: {{lastUpdated}}</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,7 +63,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   }
 
 
-  resetAction(): void {
+  reset(): void {
     this.store.setState(increment, { value: 0 });
   }
 
