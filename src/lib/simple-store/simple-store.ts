@@ -4,7 +4,7 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { QueueConcurrent, InitialState, Action, ValueTypes } from './common';
 
 
-export const latestUpdatedProperty = '_latestUpdatedProperty';
+export const latestUpdatedKey = '__latest__';
 
 
 @Injectable()
@@ -45,7 +45,7 @@ export class SimpleStore<T> {
         } else {
           state[action.key] = action.value;
         }
-        state[latestUpdatedProperty] = action.key;
+        state[latestUpdatedKey] = action.key;
         const newState = Object.assign({}, state);
         setTimeout(() => {
           action.subject.next(newState);
