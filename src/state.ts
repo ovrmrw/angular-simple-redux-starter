@@ -14,14 +14,14 @@ export type AppState = {
 
 
 /* Component, Serviceでimportして使う文字列。 */
-export const increment = 'increment';
-export const lastUpdated = 'lastUpdated';
+export const incrementKey = 'increment';
+export const lastUpdatedKey = 'lastUpdated';
 
 
-/* AppState typesと上記の文字列定義に差異がないかチェックする。 */
-const __AppStateTypeValidation__: (keyof AppState)[] = [
-  increment,
-  lastUpdated,
+/* AppState keysと上記の文字列定義に差異がないかチェックする。 */
+const __AppStateKeyValidation__: (keyof AppState)[] = [
+  incrementKey,
+  lastUpdatedKey,
 ];
 
 

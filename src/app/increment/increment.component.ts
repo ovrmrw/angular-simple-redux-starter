@@ -2,9 +2,9 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestro
 import { Observable } from 'rxjs';
 
 import { Disposer } from '../../lib/class';
-import { SimpleStore, updatedProperty } from '../../lib/simple-store';
+import { SimpleStore } from '../../lib/simple-store';
 import { AppState, IncrementState } from '../../state';
-import { increment, lastUpdated } from '../../state';
+import { incrementKey, lastUpdatedKey } from '../../state';
 
 
 @Component({
@@ -48,23 +48,36 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   increment(): void {
-    this.store.setState(increment, (p) => ({ value: p.value + 1 }))
-      .then(state => this.store.setState(increment, Promise.resolve({ value: state.increment.value + 1 })))
-      .then(state => this.store.setState(increment, Observable.of({ value: state.increment.value + 1 })))
-      .then(() => this.store.setState(lastUpdated, new Date().getTime()));
+    this.store.setState(incrementKey, (p) => ({ value: p.value + 1 }))
+      .then(state => this.store.setState(incrementKey, incrementCallback))
+      .then(state => this.store.setState(incrementKey, Promise.resolve({ value: state.increment.value + 1 })))
+      .then(state => this.store.setState(incrementKey, Observable.of(incrementCallback)))
+      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime()));
   }
 
 
   decrement(): void {
-    this.store.setState(increment, (p) => ({ value: p.value - 1 }))
-      .then(state => this.store.setState(increment, Promise.resolve({ value: state.increment.value - 1 })))
-      .then(state => this.store.setState(increment, Observable.of({ value: state.increment.value - 1 })))
-      .then(() => this.store.setState(lastUpdated, new Date().getTime()));
+    this.store.setState(incrementKey, (p) => ({ value: p.value - 1 }))
+      .then(state => this.store.setState(incrementKey, decrementCallback))
+      .then(state => this.store.setState(incrementKey, Promise.resolve({ value: state.increment.value - 1 })))
+      .then(state => this.store.setState(incrementKey, Observable.of(decrementCallback)))
+      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime()));
   }
 
 
   reset(): void {
-    this.store.setState(increment, { value: 0 });
+    this.store.setState(incrementKey, { value: 0 });
   }
 
+}
+
+
+
+function incrementCallback(state: IncrementState): IncrementState {
+  return { value: state.value + 1 };
+}
+
+
+function decrementCallback(state: IncrementState): IncrementState {
+  return { value: state.value - 1 };
 }

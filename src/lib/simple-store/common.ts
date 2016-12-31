@@ -15,7 +15,9 @@ export type Action = {
 
 
 type Value<T, K extends keyof T> = T[K];
-type Func<T, K extends keyof T> = (value: T[K]) => T[K];
+type Callback<T, K extends keyof T> = (value: T[K]) => T[K];
 
 export type ValueTypes<T, K extends keyof T> =
-  Value<T, K> | Func<T, K> | Promise<Value<T, K>> | Promise<Func<T, K>> | Observable<Value<T, K>> | Observable<Func<T, K>>;
+  Value<T, K> | Callback<T, K> |
+  Promise<Value<T, K>> | Promise<Callback<T, K>> |
+  Observable<Value<T, K>> | Observable<Callback<T, K>>;
