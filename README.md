@@ -3,7 +3,9 @@ SIDUX (simple-redux) app example using Angular, RxJS and TypeScript 2.1
 
 ---
 
-No Actions, No Reducers, just write your code in the simpler and faster way.
+No Actions, No Reducers, just write your code in the simpler, faster and safer way.
+
+All SIDUX code is typed-safe via TypeScript 2.1 power.
 
 ## Setup
 ```
