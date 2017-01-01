@@ -32,6 +32,11 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.initGetState(); // ngOnInitの中をfatにしたくないので用途毎に切り出す。
+  }
+
+
+  private initGetState(): void {
     this.disposable = this.store.getState()
       .filterByUpdatedKey(incrementKey, lastUpdatedKey) // 指定したkeyが更新されたときだけ通過させることができる。
       .subscribe(state => {
