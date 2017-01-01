@@ -3,6 +3,7 @@ import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 import { QueueConcurrent, InitialState, Action, ValueTypes } from './common';
 
+import './add/operator/all';
 
 export const latestUpdatedKey = '__latest__';
 

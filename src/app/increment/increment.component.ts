@@ -33,8 +33,9 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.disposable = this.store.getState()
-      .debounceTime(1)
+      .filterByUpdatedKey(incrementKey, lastUpdatedKey)
       .subscribe(state => {
+        console.log('filterd state:', state);
         this.counter = state.increment.value;
         this.lastUpdated = state.lastUpdated;
         this.cd.markForCheck();
