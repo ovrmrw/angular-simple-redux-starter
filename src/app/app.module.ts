@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { IncrementComponent } from './increment';
 
 import { LibModule } from '../lib/lib.module';
-import { InitialState } from '../lib/simple-store';
+import { StoreInitialState } from '../lib/simple-store';
 import { initialState } from '../state';
 
 
@@ -23,7 +23,7 @@ import { initialState } from '../state';
     LibModule,
   ],
   providers: [
-    { provide: InitialState, useValue: initialState },
+    { provide: StoreInitialState, useValue: initialState },
   ],
   bootstrap: [AppComponent]
 })

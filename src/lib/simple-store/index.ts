@@ -1,4 +1,5 @@
 export * from './simple-store.module'
+export * from './actions'
 export { SimpleStore } from './simple-store'
-export { QueueConcurrent, InitialState } from './common'
+export { StoreQueueConcurrent, StoreInitialState } from './common'
 // export { isUpdatedKey } from './helper'

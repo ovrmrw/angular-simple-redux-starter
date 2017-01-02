@@ -1,7 +1,7 @@
 import { Injectable, NgZone, Inject, Optional } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
-import { QueueConcurrent, InitialState, Action, ValueTypes } from './common';
+import { StoreQueueConcurrent, StoreInitialState, Action, ValueTypes } from './common';
 
 import './add/operator/all';
 
@@ -16,9 +16,9 @@ export class SimpleStore<T> {
 
   constructor(
     private zone: NgZone,
-    @Inject(InitialState) @Optional()
+    @Inject(StoreInitialState) @Optional()
     private initialState: T | null,
-    @Inject(QueueConcurrent) @Optional()
+    @Inject(StoreQueueConcurrent) @Optional()
     private concurrent: number | null,
   ) {
     this.provider$ = new BehaviorSubject<T>(initialState || {} as T);
