@@ -1,17 +1,17 @@
-import { Injectable, NgZone, Inject, Optional } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Injectable, NgZone, Inject, Optional } from '@angular/core'
+import { Observable, Subject, BehaviorSubject } from 'rxjs'
 
-import { StoreQueueConcurrent, StoreInitialState, Action, ValueTypes } from './common';
+import { StoreQueueConcurrent, StoreInitialState, Action, ValueOrResolver } from './common'
 
-import './add/operator/all';
+import './add/operator/all'
 
-export const latestUpdatedKey = '__latest__';
+export const latestUpdatedKey = '__latest__'
 
 
 @Injectable()
 export class SimpleStore<T> {
-  private simpleStore$ = new Subject<Action>();
-  private provider$: BehaviorSubject<T>;
+  private simpleStore$ = new Subject<Action>()
+  private provider$: BehaviorSubject<T>
 
 
   constructor(
@@ -21,9 +21,9 @@ export class SimpleStore<T> {
     @Inject(StoreQueueConcurrent) @Optional()
     private concurrent: number | null,
   ) {
-    this.provider$ = new BehaviorSubject<T>(initialState || {} as T);
-    this.createStore();
-    this.applyEffectors();
+    this.provider$ = new BehaviorSubject<T>(initialState || {} as T)
+    this.createStore()
+    this.applyEffectors()
   }
 
 
@@ -33,33 +33,36 @@ export class SimpleStore<T> {
         .mergeMap(action => {
           if (action.value instanceof Promise || action.value instanceof Observable) {
             return Observable.from(action.value)
-              .mergeMap(value => Observable.of(Object.assign(action, { value })));
+              .mergeMap(value => Observable.of(Object.assign(action, { value })))
           } else {
-            return Observable.of(action);
+            return Observable.of(action)
           }
-        }, (this.concurrent || 1));
+        }, (this.concurrent || 1))
 
-    queue
-      .scan((state, action) => {
-        if (action.value instanceof Function) {
-          state[action.key] = action.value.call(null, state[action.key]);
-        } else {
-          state[action.key] = action.value;
-        }
-        state[latestUpdatedKey] = action.key;
-        const newState = Object.assign({}, state);
-        setTimeout(() => {
-          action.subject.next(newState);
-        }, 0);
-        return newState;
-      }, this.initialState as T)
+    const reduced =
+      queue
+        .scan((state, action) => {
+          if (action.value instanceof Function) {
+            state[action.key] = action.value.call(null, state[action.key])
+          } else {
+            state[action.key] = action.value
+          }
+          state[latestUpdatedKey] = action.key
+          const newState = Object.assign({}, state)
+          setTimeout(() => {
+            action.subject.next(newState)
+          }, 0)
+          return newState
+        }, this.initialState as T)
+
+    reduced
       .subscribe(newState => {
-        console.log('newState:', newState);
+        console.log('newState:', newState)
         this.zone.run(() => {
-          this.provider$.next(newState);
-        });
-        this.effectAfterReduced(newState);
-      });
+          this.provider$.next(newState)
+        })
+        this.effectAfterReduced(newState)
+      })
   }
 
 
@@ -73,15 +76,15 @@ export class SimpleStore<T> {
   }
 
 
-  setState<K extends keyof T>(key: K, value: ValueTypes<T, K>): Promise<T> {
-    const subject = new Subject<T>();
-    this.simpleStore$.next({ key, value, subject });
-    return subject.take(1).toPromise();
+  setState<K extends keyof T>(key: K, value: ValueOrResolver<T, K>): Promise<T> {
+    const subject = new Subject<T>()
+    this.simpleStore$.next({ key, value, subject })
+    return subject.take(1).toPromise()
   }
 
 
   getState(): Observable<T> {
-    return this.provider$;
+    return this.provider$
   }
 
 }

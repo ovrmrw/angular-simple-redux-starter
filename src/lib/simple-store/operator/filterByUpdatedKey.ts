@@ -1,10 +1,10 @@
-import { Observable, Subscriber, Operator } from 'rxjs';
+import { Observable, Subscriber, Operator } from 'rxjs'
 
-import { latestUpdatedKey } from '../simple-store';
+import { latestUpdatedKey } from '../simple-store'
 
 
 export function filterByUpdatedKey<T>(this: Observable<T>, ...keys: string[]): Observable<T> {
-  return this.lift(new FilterByUpdatedKeyOperator(keys));
+  return this.lift(new FilterByUpdatedKeyOperator(keys))
 }
 
 
@@ -12,7 +12,7 @@ class FilterByUpdatedKeyOperator<T> implements Operator<T, T> {
   constructor(private keys: string[]) { }
 
   call(subscriber: Subscriber<T>, source: any): any {
-    return source.subscribe(new FilterByUpdatedKeySubscriber(subscriber, this.keys));
+    return source.subscribe(new FilterByUpdatedKeySubscriber(subscriber, this.keys))
   }
 }
 
@@ -22,23 +22,23 @@ class FilterByUpdatedKeyOperator<T> implements Operator<T, T> {
  */
 class FilterByUpdatedKeySubscriber<T> extends Subscriber<T> {
   constructor(destination: Subscriber<T>, private keys: string[]) {
-    super(destination);
+    super(destination)
   }
 
   protected _next(value: T) {
-    let result: boolean;
+    let result: boolean
     try {
-      result = this.keys.some(key => key === value[latestUpdatedKey]) || !value[latestUpdatedKey];
+      result = this.keys.some(key => key === value[latestUpdatedKey]) || !value[latestUpdatedKey]
     } catch (err) {
       if (this.destination.error) {
-        this.destination.error(err);
+        this.destination.error(err)
       }
-      return;
+      return
     }
 
     if (result) {
       if (this.destination.next) {
-        this.destination.next(value);
+        this.destination.next(value)
       }
     }
   }

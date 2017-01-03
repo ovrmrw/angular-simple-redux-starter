@@ -1,1 +1,1 @@
-export { Disposer } from './disposer.class';
+export { Disposer } from './disposer.class'

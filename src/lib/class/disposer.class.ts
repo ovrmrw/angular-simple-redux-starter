@@ -1,21 +1,21 @@
-import { ChangeDetectorRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core'
+import { Subscription } from 'rxjs'
 
 
 export abstract class Disposer {
-  private subs: Subscription[] = [];
+  private subs: Subscription[] = []
 
 
   constructor() { }
 
 
   set disposable(sub: Subscription) {
-    this.subs.push(sub);
+    this.subs.push(sub)
   }
 
 
   disposeSubscriptions(): void {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subs.forEach(sub => sub.unsubscribe())
   }
 
 }

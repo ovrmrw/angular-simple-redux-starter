@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core'
 
-import { SimpleStore } from './simple-store';
+import { SimpleStore } from './simple-store'
 
 
 @NgModule({
