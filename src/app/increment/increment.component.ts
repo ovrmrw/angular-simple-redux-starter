@@ -24,7 +24,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   constructor(
-    private store: SimpleStore<AppState>,
+    public store: SimpleStore<AppState>,
     private cd: ChangeDetectorRef,
   ) {
     super()
@@ -58,8 +58,8 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   // 直接値を代入した場合はStateを上書きする。
   // コールバックは既存のStateを更新するために用いる。
   // setState()の戻り値はPromise<AppState>なので更新後のStateを使ってチェーンできる。
-  increment(): void {
-    this.store.setState(incrementKey, (p) => ({ value: p.value + 1 })) // コールバック
+  increment(): Promise<any> {
+    return this.store.setState(incrementKey, (p) => ({ value: p.value + 1 })) // コールバック
       .then(state => this.store.setState(incrementKey, incrementCallback)) // 外部で定義したコールバック
       .then(state => this.store.setState(incrementKey, Promise.resolve({ value: state.increment.value + 1 }))) // 非同期で直接値
       .then(state => this.store.setState(incrementKey, Observable.of(incrementCallback))) // 非同期で外部のコールバック
@@ -67,8 +67,8 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   }
 
 
-  decrement(): void {
-    this.store.setState(incrementKey, (p) => ({ value: p.value - 1 }))
+  decrement(): Promise<any> {
+    return this.store.setState(incrementKey, (p) => ({ value: p.value - 1 }))
       .then(state => this.store.setState(incrementKey, decrementCallback))
       .then(state => this.store.setState(incrementKey, Promise.resolve({ value: state.increment.value - 1 })))
       .then(state => this.store.setState(incrementKey, Observable.of(decrementCallback)))
@@ -76,8 +76,8 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   }
 
 
-  reset(): void {
-    this.store.setState(incrementKey, { value: 0 })
+  reset(): Promise<any> {
+    return this.store.setState(incrementKey, { value: 0 })
   }
 
 }
