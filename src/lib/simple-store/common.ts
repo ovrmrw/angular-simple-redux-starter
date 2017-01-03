@@ -8,9 +8,9 @@ export const StoreInitialState = new OpaqueToken('InitialState');
 
 
 export type Action = {
-  key: string;
-  value: any;
-  subject: Subject<any>;
+  key: string,
+  value: any,
+  subject: Subject<any>,
 };
 
 

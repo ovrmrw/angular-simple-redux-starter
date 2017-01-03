@@ -8,8 +8,8 @@ export const initialState: AppState = {
 
 /* AppStateの型定義。 */
 export type AppState = {
-  increment: IncrementState;
-  lastUpdated: number;
+  increment: IncrementState,
+  lastUpdated: number,
 };
 
 
