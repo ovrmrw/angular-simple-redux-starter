@@ -11,7 +11,7 @@ export const latestUpdatedKey = '__latest__'
 @Injectable()
 export class SimpleStore<T> {
   private simpleStore$ = new Subject<Action>()
-  private provider$: BehaviorSubject<T>
+  private provider$: BehaviorSubject<T | Readonly<T>>
 
 
   constructor(
@@ -97,5 +97,5 @@ export class SimpleStore<T> {
 
 
 type Readonly<T> = {
-  readonly[P in keyof T]: T[P]
+  readonly[P in keyof T]: Readonly<T[P]>
 }
