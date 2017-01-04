@@ -1,4 +1,4 @@
-export const initialState = {
+export const initialState: AppState = {
   increment: {
     value: 0,
   },
@@ -6,9 +6,11 @@ export const initialState = {
 }
 
 
-/* initialStateからtypeを生成する。 */
-export type AppState = typeof initialState
-export type IncrementState = AppState['increment']
+/* AppStateの型定義。 */
+export interface AppState {
+  increment: IncrementState,
+  lastUpdated: number,
+}
 
 
 /* Component, Serviceでimportして使う文字列。 */
@@ -21,3 +23,8 @@ const __AppStateKeyValidation__: Array<keyof AppState> = [
   incrementKey,
   lastUpdatedKey,
 ]
+
+
+export interface IncrementState {
+  value: number,
+}
