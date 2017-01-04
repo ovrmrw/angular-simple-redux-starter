@@ -8,7 +8,7 @@ export const initialState = {
 
 /* initialStateからtypeを生成する。 */
 export type AppState = typeof initialState
-export type IncrementState = Pick<AppState, 'increment'>
+export type IncrementState = AppState['increment']
 
 
 /* Component, Serviceでimportして使う文字列。 */
