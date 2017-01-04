@@ -11,7 +11,7 @@ export const latestUpdatedKey = '__latest__'
 @Injectable()
 export class SimpleStore<T> {
   private simpleStore$ = new Subject<Action>()
-  private provider$: BehaviorSubject<T | Readonly<T>>
+  private provider$: BehaviorSubject<T | RecursiveReadonly<T>>
 
 
   constructor(
@@ -83,12 +83,12 @@ export class SimpleStore<T> {
   }
 
 
-  getState(): Observable<Readonly<T>> {
+  getState(): Observable<RecursiveReadonly<T>> {
     return this.provider$
   }
 
 
-  getStateAsPromise(): Promise<Readonly<T>> {
+  getStateAsPromise(): Promise<RecursiveReadonly<T>> {
     return this.provider$.take(1).toPromise()
   }
 
@@ -96,6 +96,6 @@ export class SimpleStore<T> {
 
 
 
-type Readonly<T> = {
-  readonly[P in keyof T]: Readonly<T[P]>
+type RecursiveReadonly<T> = {
+  readonly[P in keyof T]: RecursiveReadonly<T[P]>
 }
