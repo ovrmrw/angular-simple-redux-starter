@@ -2,9 +2,9 @@ import { OpaqueToken } from '@angular/core'
 import { Observable, Subject } from 'rxjs'
 
 
-export const StoreQueueConcurrent = new OpaqueToken('QueueConcurrent')
+export const StoreQueueConcurrent = new OpaqueToken('StoreQueueConcurrent')
 
-export const StoreInitialState = new OpaqueToken('InitialState')
+export const StoreInitialState = new OpaqueToken('StoreInitialState')
 
 
 export interface Action {

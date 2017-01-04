@@ -28,7 +28,7 @@ export class SimpleStore<T> {
 
 
   private createStore(): void {
-    const queue =
+    const queue$ =
       this.simpleStore$
         .mergeMap(action => {
           if (action.value instanceof Promise || action.value instanceof Observable) {
@@ -39,8 +39,8 @@ export class SimpleStore<T> {
           }
         }, (this.concurrent || 1))
 
-    const reduced =
-      queue
+    const reduced$ =
+      queue$
         .scan((state, action) => {
           if (action.value instanceof Function) {
             state[action.key] = action.value.call(null, state[action.key])
@@ -55,7 +55,7 @@ export class SimpleStore<T> {
           return newState
         }, this.initialState as T)
 
-    reduced
+    reduced$
       .subscribe(newState => {
         console.log('newState:', newState)
         this.zone.run(() => {
