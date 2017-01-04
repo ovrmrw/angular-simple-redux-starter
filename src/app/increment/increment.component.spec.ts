@@ -8,7 +8,7 @@ import { AppState } from '../../state'
 
 const initialState: AppState = {
   increment: {
-    value: 0,
+    counter: 0,
   },
   lastUpdated: 0,
 }

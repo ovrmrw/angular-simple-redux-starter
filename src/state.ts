@@ -1,6 +1,6 @@
 export const initialState: AppState = {
   increment: {
-    value: 0,
+    counter: 0,
   },
   lastUpdated: 0,
 }
@@ -26,5 +26,5 @@ const __AppStateKeyValidation__: Array<keyof AppState> = [
 
 
 export interface IncrementState {
-  value: number,
+  counter: number,
 }
