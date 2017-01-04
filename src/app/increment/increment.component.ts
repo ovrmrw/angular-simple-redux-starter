@@ -24,7 +24,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   constructor(
-    public store: SimpleStore<AppState>,
+    private store: SimpleStore<AppState>,
     private cd: ChangeDetectorRef,
   ) {
     super()
