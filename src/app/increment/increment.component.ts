@@ -39,9 +39,9 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   private initGetState(): void {
     this.disposable = this.store.getState()
       .filterByUpdatedKey(incrementKey, lastUpdatedKey) // 指定したkeyが更新されたときだけ通過させることができる。
-      .subscribe(state => {
+      .subscribe(state => { // このときstate.incrementとstate.lastUpdatedはreadonlyになっている。
         console.log('filterd state:', state)
-        this.counter = state.increment.value
+        this.counter = state.increment.value // 注)state.increment.valueはreadonlyではない。
         this.lastUpdated = state.lastUpdated
         this.cd.markForCheck()
       })
