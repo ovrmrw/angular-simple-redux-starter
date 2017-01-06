@@ -3,8 +3,7 @@ import { Observable } from 'rxjs'
 
 import { Disposer } from '../../lib/class'
 import { SimpleStore } from '../../lib/simple-store'
-import { AppState, IncrementState } from '../../state'
-import { incrementKey, lastUpdatedKey } from '../../state'
+import { AppState, IncrementState, KEY } from '../../state'
 
 
 @Component({
@@ -38,7 +37,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
   private initGetState(): void {
     this.disposable = this.store.getState()
-      .filterByUpdatedKey(incrementKey, lastUpdatedKey) // 指定したkeyが更新されたときだけ通過させることができる。
+      .filterByUpdatedKey(KEY.increment, KEY.lastUpdated) // 指定したkeyが更新されたときだけ通過させることができる。
       .subscribe(state => {
         console.log('filterd state:', state)
         this.counter = state.increment.counter
@@ -59,25 +58,25 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   // コールバックは既存のStateを更新するために用いる。
   // setState()の戻り値はPromise<AppState>なので更新後のStateを使ってチェーンできる。
   increment(): Promise<any> {
-    return this.store.setState(incrementKey, (p) => ({ counter: p.counter + 1 })) // コールバック
-      .then(state => this.store.setState(incrementKey, incrementCallback)) // 外部で定義したコールバック
-      .then(state => this.store.setState(incrementKey, Promise.resolve({ counter: state.increment.counter + 1 }))) // 非同期で直接値
-      .then(state => this.store.setState(incrementKey, Observable.of(incrementCallback))) // 非同期で外部のコールバック
-      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime())) // 直接値
+    return this.store.setState(KEY.increment, (p) => ({ counter: p.counter + 1 })) // コールバック
+      .then(state => this.store.setState(KEY.increment, incrementCallback)) // 外部で定義したコールバック
+      .then(state => this.store.setState(KEY.increment, Promise.resolve({ counter: state.increment.counter + 1 }))) // 非同期で直接値
+      .then(state => this.store.setState(KEY.increment, Observable.of(incrementCallback))) // 非同期で外部のコールバック
+      .then(state => this.store.setState(KEY.lastUpdated, new Date().getTime())) // 直接値
   }
 
 
   decrement(): Promise<any> {
-    return this.store.setState(incrementKey, (p) => ({ counter: p.counter - 1 }))
-      .then(state => this.store.setState(incrementKey, decrementCallback))
-      .then(state => this.store.setState(incrementKey, Promise.resolve({ counter: state.increment.counter - 1 })))
-      .then(state => this.store.setState(incrementKey, Observable.of(decrementCallback)))
-      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime()))
+    return this.store.setState(KEY.increment, (p) => ({ counter: p.counter - 1 }))
+      .then(state => this.store.setState(KEY.increment, decrementCallback))
+      .then(state => this.store.setState(KEY.increment, Promise.resolve({ counter: state.increment.counter - 1 })))
+      .then(state => this.store.setState(KEY.increment, Observable.of(decrementCallback)))
+      .then(state => this.store.setState(KEY.lastUpdated, new Date().getTime()))
   }
 
 
   reset(): Promise<any> {
-    return this.store.setState(incrementKey, { counter: 0 })
+    return this.store.setState(KEY.increment, { counter: 0 })
   }
 
 }

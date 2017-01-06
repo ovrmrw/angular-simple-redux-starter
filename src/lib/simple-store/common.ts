@@ -21,3 +21,15 @@ export type ValueOrResolver<T, K extends keyof T> =
   Value<T, K> | ValueResolver<T, K> |
   Promise<Value<T, K>> | Promise<ValueResolver<T, K>> |
   Observable<Value<T, K>> | Observable<ValueResolver<T, K>>
+
+
+export function typedObjectAssign<T, U extends Partial<T>>(state: T, partials: U[]): T {
+  return partials.reduce((p, partial) => {
+    return { ...<any>p, ...<any>partial }
+  }, state)
+}
+
+
+export type ObjectKeys<T> = {
+[P in keyof T]: P
+}
