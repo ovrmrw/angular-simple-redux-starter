@@ -13,9 +13,9 @@ export interface AppState {
 }
 
 
-/* Component, Serviceでimportして使う文字列。 */
-export const incrementKey = 'increment'
-export const lastUpdatedKey = 'lastUpdated'
+/* Component, Serviceでimportして使う文字列(String Literal Type)。 */
+export const incrementKey = 'increment' // String Literal Type
+export const lastUpdatedKey = 'lastUpdated' // String Literal Type
 
 
 /* AppState keysと上記の文字列定義に差異がないかチェックする。 */
