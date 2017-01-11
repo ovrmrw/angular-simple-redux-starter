@@ -1,4 +1,4 @@
-import { ObjectKeys } from './lib/simple-store';
+import { getObjectKeys } from './lib/simple-store';
 
 
 export const initialState: AppState = {
@@ -19,11 +19,8 @@ export interface AppState {
 }
 
 
-/* AppStateのKeyからオブジェクトを生成。ComponentやServiceでImportしてsetState()の第一引数に使う。 */
-export const KEY: ObjectKeys<AppState> = {
-  increment: 'increment',
-  lastUpdated: 'lastUpdated',
-}
+/* initialStateのkeyからオブジェクトを生成。ComponentやServiceでimportしてsetState()の第一引数に使う。 */
+export const KEY = getObjectKeys(initialState)
 
 
 export interface IncrementState {

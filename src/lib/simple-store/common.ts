@@ -31,3 +31,15 @@ export function mergeObject<T>(obj: T, partials: Partial<{[P in keyof T]: T[P]}>
 
 
 export type ObjectKeys<T> = {[P in keyof T]: P}
+
+
+export function getObjectKeys<T>(state: T): ObjectKeys<T> {
+  return Object.keys(state).reduce((p, key) => {
+    return { ...p, ...{ [key]: key } }
+  }, {}) as any
+}
+
+
+export type RecursiveReadonly<T> = {
+  readonly[P in keyof T]: RecursiveReadonly<T[P]>
+}
