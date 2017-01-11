@@ -40,6 +40,9 @@ export function getObjectKeys<T>(state: T): ObjectKeys<T> {
 }
 
 
+export type ObjectKey<T, K extends keyof T> = K
+
+
 export type RecursiveReadonly<T> = {
   readonly[P in keyof T]: RecursiveReadonly<T[P]>
 }

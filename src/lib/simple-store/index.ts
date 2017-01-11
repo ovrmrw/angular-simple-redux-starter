@@ -1,5 +1,5 @@
 export * from './simple-store.module'
 export * from './actions'
 export { SimpleStore } from './simple-store'
-export { StoreQueueConcurrent, StoreInitialState, mergeObject, getObjectKeys, ObjectKeys } from './common'
+export { StoreQueueConcurrent, StoreInitialState, mergeObject, getObjectKeys, ObjectKeys, ObjectKey } from './common'
 // export { isUpdatedKey } from './helper'
