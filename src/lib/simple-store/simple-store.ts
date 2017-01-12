@@ -1,3 +1,5 @@
+require('setimmediate')
+const asap = require('asap') as (func: Function) => void
 import { Injectable, NgZone, Inject, Optional } from '@angular/core'
 import { Observable, Subject, BehaviorSubject } from 'rxjs'
 
@@ -49,9 +51,12 @@ export class SimpleStore<T> {
           }
           state[latestUpdatedKey] = action.key
           const newState = Object.assign({}, state)
-          setTimeout(() => {
+          // setImmediate(() => {
+          //   action.subject.next(newState)
+          // })
+          asap(() => {
             action.subject.next(newState)
-          }, 0)
+          })
           return newState
         }, this.initialState as T)
 

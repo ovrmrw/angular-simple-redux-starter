@@ -14,18 +14,18 @@ export interface Action {
 }
 
 
-type Value<T, K extends keyof T> = T[K]
-type ValueResolver<T, K extends keyof T> = (value: T[K]) => T[K]
+type ObjectValue<T, K extends keyof T> = T[K]
+type ObjectValueResolver<T, K extends keyof T> = (value: T[K]) => T[K]
 
 export type ValueOrResolver<T, K extends keyof T> =
-  Value<T, K> | ValueResolver<T, K> |
-  Promise<Value<T, K>> | Promise<ValueResolver<T, K>> |
-  Observable<Value<T, K>> | Observable<ValueResolver<T, K>>
+  ObjectValue<T, K> | ObjectValueResolver<T, K> |
+  Promise<ObjectValue<T, K>> | Promise<ObjectValueResolver<T, K>> |
+  Observable<ObjectValue<T, K>> | Observable<ObjectValueResolver<T, K>>
 
 
 export function mergeObject<T>(obj: T, partials: Partial<{[P in keyof T]: T[P]}>[]): T {
   return partials.reduce<T>((p, partial) => {
-    return { ...<any>p, ...<any>partial }
+    return { ...p as any, ...partial as any }
   }, obj)
 }
 

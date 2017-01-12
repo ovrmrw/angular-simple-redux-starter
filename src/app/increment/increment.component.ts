@@ -59,19 +59,19 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   // setState()の戻り値はPromise<AppState>なので更新後のStateを使ってチェーンできる。
   increment(): Promise<any> {
     return this.store.setState(incrementKey, (p) => ({ counter: p.counter + 1 })) // コールバック
-      .then(state => this.store.setState(incrementKey, incrementCallback)) // 外部で定義したコールバック
-      .then(state => this.store.setState(incrementKey, Promise.resolve({ counter: state.increment.counter + 1 }))) // 非同期で直接値
-      .then(state => this.store.setState(incrementKey, Observable.of(incrementCallback))) // 非同期で外部のコールバック
-      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime())) // 直接値
+      .then(s => this.store.setState(incrementKey, incrementCallback)) // 外部で定義したコールバック
+      .then(s => this.store.setState(incrementKey, Promise.resolve({ counter: s.increment.counter + 1 }))) // 非同期で直接値
+      .then(s => this.store.setState(incrementKey, Observable.of(incrementCallback))) // 非同期で外部のコールバック
+      .then(s => this.store.setState(lastUpdatedKey, new Date().getTime())) // 直接値
   }
 
 
   decrement(): Promise<any> {
     return this.store.setState(incrementKey, (p) => ({ counter: p.counter - 1 }))
-      .then(state => this.store.setState(incrementKey, decrementCallback))
-      .then(state => this.store.setState(incrementKey, Promise.resolve({ counter: state.increment.counter - 1 })))
-      .then(state => this.store.setState(incrementKey, Observable.of(decrementCallback)))
-      .then(state => this.store.setState(lastUpdatedKey, new Date().getTime()))
+      .then(s => this.store.setState(incrementKey, decrementCallback))
+      .then(s => this.store.setState(incrementKey, Promise.resolve({ counter: s.increment.counter - 1 })))
+      .then(s => this.store.setState(incrementKey, Observable.of(decrementCallback)))
+      .then(s => this.store.setState(lastUpdatedKey, new Date().getTime()))
   }
 
 
