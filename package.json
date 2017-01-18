@@ -4,13 +4,15 @@
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
+    "overwrite": "node lib-overwrite/overwrite-modules.js",
     "ng": "ng",
-    "start": "ng serve --open",
+    "start": "npm run overwrite && ng serve --open",
+    "s": "npm run overwrite && ng serve --prod --open",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
-    "build": "ng build --prod"
+    "build": "npm run overwrite && ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -34,8 +36,10 @@
     "@angular/compiler-cli": "^2.3.1",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
-    "angular-cli": "1.0.0-beta.24",
+    "angular-cli": "1.0.0-beta.25.5",
+    "angular2-template-loader": "^0.6.0",
     "codelyzer": "~2.0.0-beta.1",
+    "fs-extra": "^2.0.0",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "1.2.0",
@@ -43,6 +47,7 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
+    "light-ts-loader": "^1.1.1",
     "protractor": "~4.0.13",
     "ts-node": "1.2.1",
     "tslint": "^4.0.2",

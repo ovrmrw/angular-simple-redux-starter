@@ -9,6 +9,8 @@ All SIDUX code is typed-safe via TypeScript 2.1 power.
 
 ## Setup
 ```
+$ yarn install
+or
 $ npm install
 ```
 
