@@ -6,9 +6,7 @@ import { HttpModule } from '@angular/http'
 import { AppComponent } from './app.component'
 import { IncrementComponent } from './increment'
 
-import { LibModule } from '../lib/lib.module'
-import { StoreInitialState } from '../lib/simple-store'
-import { initialState } from '../state'
+import { ReactiveStoreService, storeInstance } from '../state'
 
 
 @NgModule({
@@ -20,10 +18,9 @@ import { initialState } from '../state'
     BrowserModule,
     FormsModule,
     HttpModule,
-    LibModule,
   ],
   providers: [
-    { provide: StoreInitialState, useValue: initialState },
+    { provide: ReactiveStoreService, useValue: storeInstance },
   ],
   bootstrap: [AppComponent]
 })

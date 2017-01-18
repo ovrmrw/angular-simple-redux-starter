@@ -63,9 +63,8 @@
     ],
     "radix": true,
     "semicolon": [
-      "always",
-      "ignore-bound-class-methods",
-      "ignore-interfaces"
+      true,
+      "never"
     ],
     "triple-equals": [
       true,

@@ -2,9 +2,7 @@
 
 import { TestBed, async, fakeAsync, tick } from '@angular/core/testing'
 import { IncrementComponent } from './increment.component'
-import { LibModule } from '../../lib/lib.module'
-import { StoreInitialState } from '../../lib/simple-store'
-import { AppState } from '../../state'
+import { ReactiveStoreService, storeInstance, AppState } from '../../state'
 
 const initialState: AppState = {
   increment: {
@@ -20,11 +18,8 @@ describe('AppComponent', () => {
       declarations: [
         IncrementComponent,
       ],
-      imports: [
-        LibModule,
-      ],
       providers: [
-        { provide: StoreInitialState, useValue: initialState },
+        { provide: ReactiveStoreService, useValue: storeInstance },
       ]
     })
     TestBed.compileComponents()

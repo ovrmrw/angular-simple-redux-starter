@@ -1,4 +1,4 @@
-import { getObjectKeys, ObjectKey } from './lib/simple-store';
+import { ReactiveStore, getObjectKeys, getReactiveStoreAsSingleton, LoopType } from 'ovrmrw-reactive-store'
 
 
 export const initialState: AppState = {
@@ -9,21 +9,22 @@ export const initialState: AppState = {
 }
 
 
-/* 
-  AppStateの型定義。 
-  Keyを変更するときは KEY: ObjectKeys<AppState> の中身を変更してからこっちを変更すること。(for VSCode 1.8.1)
-*/
+export const KEY = getObjectKeys(initialState)
+
+export const storeInstance = getReactiveStoreAsSingleton(initialState, {
+  concurrent: 1,
+  output: true,
+  loopType: LoopType.asap,
+})
+
+export class ReactiveStoreService extends ReactiveStore<AppState> { }
+
+
+
 export interface AppState {
   increment: IncrementState,
   lastUpdated: number,
 }
-
-
-/* initialStateのkeyからオブジェクトを生成。ComponentやServiceでimportしてsetState()の第一引数に使う。 */
-// export const KEY = getObjectKeys(initialState)
-export const incrementKey: ObjectKey<AppState, 'increment'> = 'increment'
-export const lastUpdatedKey: ObjectKey<AppState, 'lastUpdated'> = 'lastUpdated'
-
 
 export interface IncrementState {
   counter: number,
