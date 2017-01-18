@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestro
 import { Observable } from 'rxjs'
 
 import { Disposer } from '../../lib/class'
-import { ReactiveStoreService, IncrementState, KEY } from '../../state'
+import { ReactiveStoreService, IncrementState, AppState, KEY } from '../../state'
 
 
 @Component({
