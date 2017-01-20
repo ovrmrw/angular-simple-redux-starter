@@ -1,3 +1,4 @@
+import { Injectable, NgZone } from '@angular/core'
 import { ReactiveStore, getObjectKeys, getReactiveStoreAsSingleton, LoopType } from 'ovrmrw-reactive-store'
 
 
@@ -17,7 +18,20 @@ export const storeInstance = getReactiveStoreAsSingleton(initialState, {
   loopType: LoopType.asap,
 })
 
-export class ReactiveStoreService extends ReactiveStore<AppState> { }
+
+@Injectable()
+export class ReactiveStoreService extends ReactiveStore<AppState> {
+  constructor(
+    private zone: NgZone,
+  ) {
+    super(initialState, {
+      concurrent: 1,
+      output: true,
+      loopType: LoopType.asap,
+      ngZone: zone,
+    })
+  }
+}
 
 
 

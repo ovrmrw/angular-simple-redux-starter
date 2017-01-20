@@ -20,7 +20,8 @@ import { ReactiveStoreService, storeInstance } from '../state'
     HttpModule,
   ],
   providers: [
-    { provide: ReactiveStoreService, useValue: storeInstance },
+    // { provide: ReactiveStoreService, useValue: storeInstance },
+    ReactiveStoreService,
   ],
   bootstrap: [AppComponent]
 })

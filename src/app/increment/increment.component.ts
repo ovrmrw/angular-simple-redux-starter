@@ -30,13 +30,13 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.initGetState() // ngOnInitの中をfatにしたくないので用途毎に切り出す。
+    this.initGetState()
   }
 
 
   private initGetState(): void {
     this.disposable = this.store.getter()
-      .filterByUpdatedKey(KEY.increment, KEY.lastUpdated) // 指定したkeyが更新されたときだけ通過させることができる。
+      .filterByUpdatedKey(KEY.increment, KEY.lastUpdated)
       .subscribe(state => {
         console.log('filterd state:', state)
         this.counter = state.increment.counter
@@ -51,17 +51,12 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
   }
 
 
-  // setState()の第一引数に応じて第二引数に型が適用される。(TypeScript 2.1のkeyofが使われている)
-  // 第二引数は直接値を代入しても良いしコールバックを代入しても良い。
-  // 直接値を代入した場合はStateを上書きする。
-  // コールバックは既存のStateを更新するために用いる。
-  // setState()の戻り値はPromise<AppState>なので更新後のStateを使ってチェーンできる。
   increment(): Promise<any> {
-    return this.store.setter(KEY.increment, (p) => ({ counter: p.counter + 1 })) // コールバック
-      .then(() => this.store.setter(KEY.increment, incrementCallback)) // 外部で定義したコールバック
-      .then(() => this.store.setter(KEY.increment, (_, a) => Promise.resolve({ counter: a.increment.counter + 1 }))) // 非同期で直接値
-      .then(() => this.store.setter(KEY.increment, Observable.of(incrementCallback))) // 非同期で外部のコールバック
-      .then(() => this.store.setter(KEY.lastUpdated, new Date().getTime())) // 直接値
+    return this.store.setter(KEY.increment, (p) => ({ counter: p.counter + 1 }))
+      .then(() => this.store.setter(KEY.increment, incrementCallback))
+      .then(() => this.store.setter(KEY.increment, (_, a) => Promise.resolve({ counter: a.increment.counter + 1 })))
+      .then(() => this.store.setter(KEY.increment, Observable.of(incrementCallback)))
+      .then(() => this.store.setter(KEY.lastUpdated, new Date().getTime()))
   }
 
 

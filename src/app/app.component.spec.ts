@@ -1,56 +1,45 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing'
+import { TestBed, async, fakeAsync, tick, ComponentFixture } from '@angular/core/testing'
+import { NO_ERRORS_SCHEMA } from '@angular/core'
 import { AppComponent } from './app.component'
-import { IncrementComponent } from './increment'
-import { LibModule } from '../lib/lib.module'
-import { StoreInitialState } from '../lib/simple-store'
-import { AppState } from '../state'
-
-const initialState: AppState = {
-  increment: {
-    counter: 0,
-  },
-  lastUpdated: 0,
-}
 
 
 describe('AppComponent', () => {
+  let fixture: ComponentFixture<AppComponent>
+  let cp: AppComponent
+  let el: any // Element
+
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        IncrementComponent,
-      ],
-      imports: [
-        LibModule,
-      ],
-      providers: [
-        { provide: StoreInitialState, useValue: initialState },
-      ]
-    })
-    TestBed.compileComponents()
+    TestBed
+      .configureTestingModule({
+        declarations: [
+          AppComponent,
+        ],
+        schemas: [
+          NO_ERRORS_SCHEMA,
+        ]
+      })
+      .compileComponents()
+    fixture = TestBed.createComponent(AppComponent)
+    cp = fixture.debugElement.componentInstance
+    el = fixture.debugElement.nativeElement
   })
 
 
   it('should create the app', fakeAsync(() => {
-    let fixture = TestBed.createComponent(AppComponent)
-    let app = fixture.debugElement.componentInstance
-    expect(app).toBeTruthy()
+    expect(cp).toBeTruthy()
   }))
 
 
   it(`should have as title 'app works!'`, fakeAsync(() => {
-    let fixture = TestBed.createComponent(AppComponent)
-    let app = fixture.debugElement.componentInstance
-    expect(app.title).toEqual('app works!')
+    expect(cp.title).toEqual('app works!')
   }))
 
 
   it('should render title in a h1 tag', fakeAsync(() => {
-    let fixture = TestBed.createComponent(AppComponent)
     fixture.detectChanges()
-    let compiled = fixture.debugElement.nativeElement
-    expect(compiled.querySelector('h1').textContent).toContain('app works!')
+    expect(el.querySelector('h1').textContent).toContain('app works!')
   }))
 })

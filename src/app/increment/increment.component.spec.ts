@@ -1,8 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, fakeAsync, tick } from '@angular/core/testing'
+import { TestBed, async, fakeAsync, tick, ComponentFixture } from '@angular/core/testing'
+import { Injectable, NgZone } from '@angular/core'
 import { IncrementComponent } from './increment.component'
-import { ReactiveStoreService, storeInstance, AppState } from '../../state'
+import { ReactiveStore, LoopType } from 'ovrmrw-reactive-store'
+import { AppState, ReactiveStoreService } from '../../state'
+
 
 const initialState: AppState = {
   increment: {
@@ -11,69 +14,85 @@ const initialState: AppState = {
   lastUpdated: 0,
 }
 
-
-describe('AppComponent', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        IncrementComponent,
-      ],
-      providers: [
-        { provide: ReactiveStoreService, useValue: storeInstance },
-      ]
+@Injectable()
+class MockReactiveStoreService extends ReactiveStore<AppState> {
+  constructor(
+    private zone: NgZone,
+  ) {
+    super(initialState, {
+      concurrent: 1,
+      output: true,
+      loopType: LoopType.settimeout,
+      ngZone: zone,
     })
-    TestBed.compileComponents()
+  }
+}
+
+
+describe('IncrementComponent', () => {
+  let fixture: ComponentFixture<IncrementComponent>
+  let cp: IncrementComponent
+  let el: any // Element
+
+
+  beforeEach(() => {
+    TestBed
+      .configureTestingModule({
+        declarations: [
+          IncrementComponent,
+        ],
+        providers: [
+          { provide: ReactiveStoreService, useClass: MockReactiveStoreService },
+        ]
+      })
+      .compileComponents()
+    fixture = TestBed.createComponent(IncrementComponent)
+    cp = fixture.debugElement.componentInstance
+    el = fixture.debugElement.nativeElement
   })
 
 
   it('should create the app', fakeAsync(() => {
-    const fixture = TestBed.createComponent(IncrementComponent)
-    const app = fixture.componentInstance
-    expect(app).toBeTruthy()
+    expect(cp).toBeTruthy()
   }))
 
 
   it('should render title in a h1 tag', fakeAsync(() => {
-    const fixture = TestBed.createComponent(IncrementComponent)
     fixture.detectChanges()
-    const element = fixture.debugElement.nativeElement
-    expect(element.querySelector('h1').textContent).toContain('0')
+    expect(el.querySelector('h1').textContent).toContain('0')
   }))
 
 
   it('increment', fakeAsync(() => {
-    const fixture = TestBed.createComponent(IncrementComponent)
-    const comp = fixture.componentInstance
-    comp.increment()
-    tick() // counter => 4
+    cp.increment()
+    tick()
     fixture.detectChanges()
-    expect(comp.counter).toBe(4)
-    expect(comp.lastUpdated).not.toBe(0)
+    expect(cp.counter).toBe(4)
+    expect(cp.lastUpdated).not.toBe(0)
   }))
 
 
   it('decrement', fakeAsync(() => {
-    const fixture = TestBed.createComponent(IncrementComponent)
-    const comp = fixture.componentInstance
-    comp.decrement()
-    tick() // counter => -4
+    cp.reset() // workaround
+    tick()
+
+    cp.decrement()
+    tick()
     fixture.detectChanges()
-    expect(comp.counter).toBe(-4)
-    expect(comp.lastUpdated).not.toBe(0)
+    expect(cp.counter).toBe(-4)
+    expect(cp.lastUpdated).not.toBe(0)
   }))
 
 
   it('reset', fakeAsync(() => {
-    const fixture = TestBed.createComponent(IncrementComponent)
-    const comp = fixture.componentInstance
-    comp.increment()
-    tick() // counter => 4
-    comp.increment()
-    tick() // counter => 8
-    comp.reset()
-    tick() // counter => 0
+    cp.increment()
+    tick()
+    cp.increment()
+    tick()
+    cp.reset()
+    tick()
     fixture.detectChanges()
-    expect(comp.counter).toBe(0)
-    expect(comp.lastUpdated).not.toBe(0)
+    expect(cp.counter).toBe(0)
+    expect(cp.lastUpdated).not.toBe(0)
   }))
 })
