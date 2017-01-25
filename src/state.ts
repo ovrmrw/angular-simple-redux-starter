@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core'
-import { ReactiveStore, getObjectKeys, getReactiveStoreAsSingleton, LoopType } from 'ovrmrw-reactive-store'
+import { ReactiveStore, getObjectKeys } from 'ovrmrw-reactive-store'
 
 
 export const initialState: AppState = {
@@ -12,12 +12,6 @@ export const initialState: AppState = {
 
 export const KEY = getObjectKeys(initialState)
 
-export const storeInstance = getReactiveStoreAsSingleton(initialState, {
-  concurrent: 1,
-  output: true,
-  loopType: LoopType.asap,
-})
-
 
 @Injectable()
 export class ReactiveStoreService extends ReactiveStore<AppState> {
@@ -25,9 +19,8 @@ export class ReactiveStoreService extends ReactiveStore<AppState> {
     private zone: NgZone,
   ) {
     super(initialState, {
-      concurrent: 1,
+      concurrent: Number.POSITIVE_INFINITY,
       output: true,
-      loopType: LoopType.asap,
       ngZone: zone,
     })
   }

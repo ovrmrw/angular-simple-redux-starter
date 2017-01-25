@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http'
 import { AppComponent } from './app.component'
 import { IncrementComponent } from './increment'
 
-import { ReactiveStoreService, storeInstance } from '../state'
+import { ReactiveStoreService } from '../state'
 
 
 @NgModule({
@@ -20,7 +20,6 @@ import { ReactiveStoreService, storeInstance } from '../state'
     HttpModule,
   ],
   providers: [
-    // { provide: ReactiveStoreService, useValue: storeInstance },
     ReactiveStoreService,
   ],
   bootstrap: [AppComponent]
