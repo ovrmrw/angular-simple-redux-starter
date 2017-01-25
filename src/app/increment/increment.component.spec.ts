@@ -1,9 +1,8 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, fakeAsync, tick, ComponentFixture, discardPeriodicTasks } from '@angular/core/testing'
-import { Injectable, NgZone } from '@angular/core'
 import { IncrementComponent } from './increment.component'
-import { ReactiveStore, LoopType } from 'ovrmrw-reactive-store'
+import { ReactiveStore } from 'ovrmrw-reactive-store'
 import { AppState, ReactiveStoreService } from '../../state'
 
 
@@ -14,26 +13,12 @@ const initialState: AppState = {
   lastUpdated: 0,
 }
 
-@Injectable()
-class MockReactiveStoreService extends ReactiveStore<AppState> {
-  constructor(
-    private zone: NgZone,
-  ) {
-    super(initialState, {
-      concurrent: 1,
-      output: true,
-      // loopType: LoopType.asap,
-      // ngZone: zone,
-      testing: true,
-    })
-  }
-}
-
 
 describe('IncrementComponent', () => {
   let fixture: ComponentFixture<IncrementComponent>
   let cp: IncrementComponent
   let el: any // Element
+  let state: AppState
 
 
   beforeEach(() => {
@@ -72,7 +57,7 @@ describe('IncrementComponent', () => {
           IncrementComponent,
         ],
         providers: [
-          { provide: ReactiveStoreService, useClass: MockReactiveStoreService },
+          { provide: ReactiveStoreService, useValue: new ReactiveStore(initialState, { testing: true }) },
         ]
       })
       .compileComponents()
@@ -93,74 +78,56 @@ describe('IncrementComponent', () => {
   }))
 
 
-  it('increment', (done) => {
-    let state: AppState
-    cp.store.forceResetForTesting().then(() => {
-      cp.store.getter().subscribe({
-        next: s => {
-          state = s
-          console.log('counter:', state.increment.counter)
-        },
-        complete: () => {
-          expect(state.increment.counter).toBe(4)
-          expect(state.lastUpdated).not.toBe(0)
-          done()
-        }
-      })
-
-      cp.increment()
-        .then(() => {
-          cp.store.forceCompleteForTesting()
-        })
+  it('increment', async (done) => {
+    await cp.store.forceResetForTesting()
+    cp.ngOnInit()
+    cp.store.getter().subscribe({
+      complete: () => {
+        fixture.detectChanges()
+        expect(cp.counter).toBe(4)
+        expect(cp.lastUpdated).not.toBe(0)
+        done()
+      }
     })
+
+    await cp.increment()
+    cp.store.forceCompleteForTesting()
   })
 
 
-  it('decrement', (done) => {
-    let state: AppState
-    cp.store.forceResetForTesting().then(() => {
-      cp.store.getter().subscribe({
-        next: s => {
-          state = s
-          console.log('counter:', state.increment.counter)
-        },
-        complete: () => {
-          expect(state.increment.counter).toBe(-4)
-          expect(state.lastUpdated).not.toBe(0)
-          done()
-        }
-      })
-
-      cp.decrement()
-        .then(() => {
-          cp.store.forceCompleteForTesting()
-        })
+  it('decrement', async (done) => {
+    await cp.store.forceResetForTesting()
+    cp.ngOnInit()
+    cp.store.getter().subscribe({
+      complete: () => {
+        fixture.detectChanges()
+        expect(cp.counter).toBe(-4)
+        expect(cp.lastUpdated).not.toBe(0)
+        done()
+      }
     })
+
+    await cp.decrement()
+    cp.store.forceCompleteForTesting()
   })
 
 
-  it('reset', (done) => {
-    let state: AppState
-    cp.store.forceResetForTesting().then(() => {
-      cp.store.getter().subscribe({
-        next: s => {
-          state = s
-          console.log('counter:', state.increment.counter)
-        },
-        complete: () => {
-          expect(state.increment.counter).toBe(0)
-          expect(state.lastUpdated).not.toBe(0)
-          done()
-        }
-      })
-
-      cp.increment()
-        .then(() => cp.increment())
-        .then(() => cp.reset())
-        .then(() => {
-          cp.store.forceCompleteForTesting()
-        })
+  it('reset', async (done) => {
+    await cp.store.forceResetForTesting()
+    cp.ngOnInit()
+    cp.store.getter().subscribe({
+      complete: () => {
+        fixture.detectChanges()
+        expect(cp.counter).toBe(0)
+        expect(cp.lastUpdated).not.toBe(0)
+        done()
+      }
     })
+
+    await cp.increment()
+    await cp.increment()
+    await cp.reset()
+    cp.store.forceCompleteForTesting()
   })
 
 })

@@ -13,3 +13,11 @@ if (err) {
 } else {
   console.log(filename + ' overwrite is successed.');
 }
+
+filename = 'angular-cli/models/webpack-build-test.js';
+err = fs.copySync(root + '/lib-overwrite/' + filename, root + '/node_modules/' + filename);
+if (err) {
+  console.error(err);
+} else {
+  console.log(filename + ' overwrite is successed.');
+}
