@@ -22,7 +22,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   constructor(
-    private store: ReactiveStoreService,
+    public store: ReactiveStoreService,
     private cd: ChangeDetectorRef,
   ) {
     super()
