@@ -2,7 +2,7 @@
 
 import { TestBed, async, fakeAsync, tick, ComponentFixture, discardPeriodicTasks } from '@angular/core/testing'
 import { IncrementComponent } from './increment.component'
-import { ReactiveStore } from 'ovrmrw-reactive-store'
+import { ReactiveStore, LoopType } from 'ovrmrw-reactive-store'
 import { AppState, ReactiveStoreService } from '../../state'
 
 
@@ -79,13 +79,13 @@ describe('IncrementComponent', () => {
 
 
   it('increment', async (done) => {
-    await cp.store.forceResetForTesting()
     cp.ngOnInit()
     cp.store.getter().subscribe({
-      complete: () => {
+      complete: async () => {
         fixture.detectChanges()
         expect(cp.counter).toBe(4)
         expect(cp.lastUpdated).not.toBe(0)
+        await cp.store.forceResetForTesting()
         done()
       }
     })
@@ -96,13 +96,13 @@ describe('IncrementComponent', () => {
 
 
   it('decrement', async (done) => {
-    await cp.store.forceResetForTesting()
     cp.ngOnInit()
     cp.store.getter().subscribe({
-      complete: () => {
+      complete: async () => {
         fixture.detectChanges()
         expect(cp.counter).toBe(-4)
         expect(cp.lastUpdated).not.toBe(0)
+        await cp.store.forceResetForTesting()
         done()
       }
     })
@@ -113,13 +113,13 @@ describe('IncrementComponent', () => {
 
 
   it('reset', async (done) => {
-    await cp.store.forceResetForTesting()
     cp.ngOnInit()
     cp.store.getter().subscribe({
-      complete: () => {
+      complete: async () => {
         fixture.detectChanges()
         expect(cp.counter).toBe(0)
         expect(cp.lastUpdated).not.toBe(0)
+        await cp.store.forceResetForTesting()
         done()
       }
     })
