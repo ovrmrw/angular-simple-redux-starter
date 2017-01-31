@@ -61,8 +61,8 @@ describe('IncrementComponent', () => {
             provide: ReactiveStoreService,
             useValue: new ReactiveStore(initialState, {
               output: true,
-              loopType: LoopType.settimeout,
-              testing: true
+              loopType: LoopType.settimeout, // LoopType.asap(default setting) is not compatible for testings on the Zone.
+              // testing: true
             })
           },
         ]
