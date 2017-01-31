@@ -57,7 +57,14 @@ describe('IncrementComponent', () => {
           IncrementComponent,
         ],
         providers: [
-          { provide: ReactiveStoreService, useValue: new ReactiveStore(initialState, { testing: true }) },
+          {
+            provide: ReactiveStoreService,
+            useValue: new ReactiveStore(initialState, {
+              output: true,
+              loopType: LoopType.settimeout,
+              testing: true
+            })
+          },
         ]
       })
       .compileComponents()
@@ -78,56 +85,78 @@ describe('IncrementComponent', () => {
   }))
 
 
-  it('increment', async (done) => {
-    cp.ngOnInit()
-    cp.store.getter().subscribe({
-      complete: async () => {
-        fixture.detectChanges()
-        expect(cp.counter).toBe(4)
-        expect(cp.lastUpdated).not.toBe(0)
-        await cp.store.forceResetForTesting()
-        done()
-      }
-    })
-
-    await cp.increment()
-    cp.store.forceCompleteForTesting()
-  })
-
-
-  it('decrement', async (done) => {
-    cp.ngOnInit()
-    cp.store.getter().subscribe({
-      complete: async () => {
-        fixture.detectChanges()
-        expect(cp.counter).toBe(-4)
-        expect(cp.lastUpdated).not.toBe(0)
-        await cp.store.forceResetForTesting()
-        done()
-      }
-    })
-
-    await cp.decrement()
-    cp.store.forceCompleteForTesting()
-  })
+  // it('increment', async (done) => {
+  //   cp.ngOnInit()
+  //   cp.store.getter().subscribe({
+  //     complete: async () => {
+  //       fixture.detectChanges()
+  //       expect(cp.counter).toBe(104)
+  //       expect(cp.lastUpdated).not.toBe(0)
+  //       await cp.store.forceResetForTesting()
+  //       done()
+  //     }
+  //   })
+  //   await cp.increment()
+  //   cp.store.forceCompleteForTesting()
+  // })
+  it('increment', fakeAsync(() => {
+    cp.increment()
+    tick()
+    fixture.detectChanges()
+    expect(cp.counter).toBe(4)
+    expect(cp.lastUpdated).not.toBe(0)
+  }))
 
 
-  it('reset', async (done) => {
-    cp.ngOnInit()
-    cp.store.getter().subscribe({
-      complete: async () => {
-        fixture.detectChanges()
-        expect(cp.counter).toBe(0)
-        expect(cp.lastUpdated).not.toBe(0)
-        await cp.store.forceResetForTesting()
-        done()
-      }
-    })
+  // it('decrement', async (done) => {
+  //   cp.ngOnInit()
+  //   cp.store.getter().subscribe({
+  //     complete: async () => {
+  //       fixture.detectChanges()
+  //       expect(cp.counter).toBe(96)
+  //       expect(cp.lastUpdated).not.toBe(0)
+  //       await cp.store.forceResetForTesting()
+  //       done()
+  //     }
+  //   })
+  //   await cp.decrement()
+  //   cp.store.forceCompleteForTesting()
+  // })
+  it('decrement', fakeAsync(() => {
+    cp.decrement()
+    tick()
+    fixture.detectChanges()
+    expect(cp.counter).toBe(-4)
+    expect(cp.lastUpdated).not.toBe(0)
+  }))
 
-    await cp.increment()
-    await cp.increment()
-    await cp.reset()
-    cp.store.forceCompleteForTesting()
-  })
+
+  // it('reset', async (done) => {
+  //   cp.ngOnInit()
+  //   cp.store.getter().subscribe({
+  //     complete: async () => {
+  //       fixture.detectChanges()
+  //       expect(cp.counter).toBe(0)
+  //       expect(cp.lastUpdated).not.toBe(0)
+  //       await cp.store.forceResetForTesting()
+  //       done()
+  //     }
+  //   })
+  //   await cp.increment()
+  //   await cp.increment()
+  //   await cp.reset()
+  //   cp.store.forceCompleteForTesting()
+  // })
+  it('reset', fakeAsync(() => {
+    cp.increment()
+    tick()
+    cp.increment()
+    tick()
+    cp.reset()
+    tick()
+    fixture.detectChanges()
+    expect(cp.counter).toBe(0)
+    expect(cp.lastUpdated).not.toBe(0)
+  }))
 
 })
