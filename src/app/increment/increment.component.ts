@@ -30,11 +30,11 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.initGetState()
+    this.initState()
   }
 
 
-  private initGetState(): void {
+  private initState(): void {
     this.disposable = this.store.getter()
       .filterByUpdatedKey(KEY.increment, KEY.lastUpdated)
       .subscribe(state => {
@@ -70,7 +70,7 @@ export class IncrementComponent extends Disposer implements OnInit, OnDestroy {
 
 
   reset(): Promise<any> {
-    return this.store.setter(KEY.increment, { counter: 0 })
+    return this.store.setter(KEY.increment, { counter: this.store.initialState.increment.counter })
   }
 
 }

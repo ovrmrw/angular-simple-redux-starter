@@ -8,7 +8,7 @@ import { AppState, ReactiveStoreService } from '../../state'
 
 const initialState: AppState = {
   increment: {
-    counter: 0,
+    counter: 100,
   },
   lastUpdated: 0,
 }
@@ -81,7 +81,7 @@ describe('IncrementComponent', () => {
 
   it('should render title in a h1 tag', fakeAsync(() => {
     fixture.detectChanges()
-    expect(el.querySelector('h1')).toHaveText('0')
+    expect(el.querySelector('h1')).toHaveText('100')
   }))
 
 
@@ -103,7 +103,7 @@ describe('IncrementComponent', () => {
     cp.increment()
     tick()
     fixture.detectChanges()
-    expect(cp.counter).toBe(4)
+    expect(cp.counter).toBe(104)
     expect(cp.lastUpdated).not.toBe(0)
   }))
 
@@ -126,7 +126,7 @@ describe('IncrementComponent', () => {
     cp.decrement()
     tick()
     fixture.detectChanges()
-    expect(cp.counter).toBe(-4)
+    expect(cp.counter).toBe(96)
     expect(cp.lastUpdated).not.toBe(0)
   }))
 
@@ -155,7 +155,7 @@ describe('IncrementComponent', () => {
     cp.reset()
     tick()
     fixture.detectChanges()
-    expect(cp.counter).toBe(0)
+    expect(cp.counter).toBe(100)
     expect(cp.lastUpdated).not.toBe(0)
   }))
 
