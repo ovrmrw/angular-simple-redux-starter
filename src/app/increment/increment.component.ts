@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core'
-import { Observable } from 'rxjs'
+import { Observable } from 'rxjs/Rx'
 
 import { Disposer } from '../../lib/class'
 import { ReactiveStoreService, IncrementState, AppState, KEY } from '../../state'

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef } from '@angular/core'
-import { Subscription } from 'rxjs'
+import { Subscription } from 'rxjs/Subscription'
 
 
 export abstract class Disposer {
